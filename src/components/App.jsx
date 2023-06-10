@@ -15,7 +15,6 @@ class App extends Component {
     page: 1,
     perPage: 12,
     loading: false,
-    showModal: false,
     largeImage: '',
     error: null,
     totalHits: '',
@@ -30,7 +29,6 @@ class App extends Component {
       .then(({ hits, totalHits }) => {
         this.setState(prevState => ({
           hits: [...prevState.hits, ...hits],
-          page: prevState.page + 1,
           totalHits: totalHits,
         }));
       })
@@ -59,6 +57,11 @@ class App extends Component {
     console.log(largeImage);
     this.setState({ largeImage });
     this.toggleModal();
+  };
+
+  handleLoadMoreBtnClick = () => {
+    this.setState(prevState => ({ page: prevState.page + 1 }));
+    this.fetchGallery();
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -98,7 +101,7 @@ class App extends Component {
         )}
 
         {hits.length > 0 && !loading && showLoadMore && (
-          <Button onClick={this.fetchGallery} />
+          <Button onClick={this.handleLoadMoreBtnClick} />
         )}
 
         {showModal && (

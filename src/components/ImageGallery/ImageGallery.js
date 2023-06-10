@@ -11,14 +11,14 @@ class ImageGallery extends Component {
   };
 
   toggleModal = () => {
-    this.setState(({ showModal }) => ({
-      showModal: !showModal,
+    this.setState(prevState => ({
+      showModal: !prevState.showModal,
     }));
   };
 
   selectPicture = link => {
-    this.setState({ selectedPicture: link });
-    this.toggleModal();
+    this.setState({ selectedPicture: link, showModal: true });
+    // this.toggleModal();
   };
 
   render() {
