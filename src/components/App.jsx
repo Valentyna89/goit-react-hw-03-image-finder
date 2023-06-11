@@ -22,7 +22,6 @@ class App extends Component {
 
   fetchGallery = () => {
     const { searchQuery, page, perPage } = this.state;
-    // console.log('this.state: ', this.state);
     this.setState({ loading: true });
 
     getImages(searchQuery, page, perPage)
@@ -37,12 +36,11 @@ class App extends Component {
   };
 
   showLoadMore = () => {
-    const { totalHits, page } = this.state;
-    return Math.ceil(totalHits / 12) !== page - 1;
+    const { totalHits, page, perPage } = this.state;
+    return page < Math.ceil(totalHits / perPage);
   };
 
   handleFormSubmit = searchQuery => {
-    console.log(searchQuery);
     this.setState({ searchQuery, hits: [], page: 1 });
     console.log('this.state: ', this.state);
   };
@@ -54,13 +52,14 @@ class App extends Component {
   };
 
   handleOpenPicture = largeImage => {
-    console.log(largeImage);
+    // console.log(largeImage);
     this.setState({ largeImage });
     this.toggleModal();
   };
 
-  handleLoadMoreBtnClick = () => {
-    this.setState(prevState => ({ page: prevState.page + 1 }));
+  handleLoadMoreBtnClick = async () => {
+    // console.log(this.state.page);
+    await this.setState(prevState => ({ page: prevState.page + 1 }));
     this.fetchGallery();
   };
 
@@ -100,7 +99,7 @@ class App extends Component {
           </div>
         )}
 
-        {hits.length > 0 && !loading && showLoadMore && (
+        {hits.length !== 0 && !loading && showLoadMore && (
           <Button onClick={this.handleLoadMoreBtnClick} />
         )}
 
